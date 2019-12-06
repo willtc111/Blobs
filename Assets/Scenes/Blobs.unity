@@ -185,11 +185,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerBlob
       objectReference: {fileID: 0}
-    - target: {fileID: 1626641598114783120, guid: c8b09d047bef5de418027ccbf917c4f0,
-        type: 3}
-      propertyPath: m_Parameters.widthMultiplier
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 590773127455838292, guid: c8b09d047bef5de418027ccbf917c4f0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -255,7 +250,13 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1626641598114783120, guid: c8b09d047bef5de418027ccbf917c4f0,
+        type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2180930116400230725, guid: c8b09d047bef5de418027ccbf917c4f0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c8b09d047bef5de418027ccbf917c4f0, type: 3}
 --- !u!4 &519420032 stripped
 Transform:

@@ -19,13 +19,14 @@ public class Triangle {
         }
     }
 
-    // Whether or not this triangle contains a point
+    // Does this triangle contain the given point?
     public bool PointInside(Point p) {
         return LeftOf(p, points[0], points[1])
             && LeftOf(p, points[1], points[2])
             && LeftOf(p, points[2], points[0]);
     }
 
+    // Calculate the triangle's circumcircle
     public float[] Circle() {
         float xy12 = Mathf.Pow(points[0].x(),2) - Mathf.Pow(points[1].x(),2) + Mathf.Pow(points[0].y(),2) - Mathf.Pow(points[1].y(),2);
         float xy13 = Mathf.Pow(points[0].x(),2) - Mathf.Pow(points[2].x(),2) + Mathf.Pow(points[0].y(),2) - Mathf.Pow(points[2].y(),2);
@@ -41,6 +42,7 @@ public class Triangle {
         return new float[]{x,y,r};
     }
 
+    // Does this triangle's circumcircle contain the given point?
     public bool CircleContains(Point p) {
         float[] circle = Circle();
         
@@ -73,6 +75,7 @@ public class Triangle {
         return points[0].ToString() + ", " + points[1].ToString() + ", " + points[2].ToString();
     }
 
+    // Get triangle's points in 3D space
     public Vector3[] getVector3s() {
         Vector3[] vecs = new Vector3[points.Length];
         for(int i = 0; i < points.Length; i++) {
@@ -81,6 +84,7 @@ public class Triangle {
         return vecs;
     }
 
+    // Get the lines that make up this triangle
     public Line[] toLines() {
         return new Line[3]{
             new Line(points[0], points[1]),

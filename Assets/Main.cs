@@ -5,22 +5,29 @@ using UnityEngine;
 
 public class Main : MonoBehaviour {
 
+    // The player's blob object
     [SerializeField]
     public GameObject player;
 
+    // The objects that will be used to render triangles
     [SerializeField]
     public GameObject TriangleDrawerPrefab;
 
+    // The objects that will be used to render green blobs
     [SerializeField]
     public GameObject PointPrefab;
 
+    // The objects that will be used to render red blobs
     [SerializeField]
     public GameObject RedPointPrefab;
 
+    // The dot to eat
     [SerializeField]
     public GameObject dot;
 
+    // The current point (blob) list
     private List<Point> points;
+    // The current triangulation
     private List<Triangle> triangles;
 
     private bool showingTriangulation = false;
@@ -55,12 +62,11 @@ public class Main : MonoBehaviour {
             return;
         }
 
+        // Handle user inputs
         if( Input.GetKeyDown(KeyCode.R)) {
-            Debug.Log("YOU GAVE UP!");
             paused = true;
             Invoke("lose", 2);
         }
-
         if( Input.GetKeyDown("t") ) {
             showingTriangulation = !showingTriangulation;
         }
@@ -71,32 +77,33 @@ public class Main : MonoBehaviour {
             ClearAll();
         }
 
+        // Do the frame update stuff
         UpdatePoints();
         UpdateTriangles();
-
         movePlayer();
 
+        // Draw the "educational" mode stuff
         if( showingTriangulation ) {
             ShowTriangulation();
         } else {
             HideTriangulation();
         }
-
         if( showingVoronoi ) {
             ShowVoronoi();
         } else {
             HideVoronoi();
         }
-
     }
 
+    // End the game
     private void lose() {
-        Debug.Log("Ending Game");
+        //Debug.Log("Ending Game");
         Menu.score = score;
         ClearAll();
         Menu.LoseGame();
     }
 
+    // Handle moving the player
     private void movePlayer() {
         // Get the player point
         Point pp = points[4];
@@ -104,6 +111,7 @@ public class Main : MonoBehaviour {
         // Move it
         Vector2 push = new Vector2(0,0);
 
+        // Add mouse influence
         if (Input.GetMouseButton(0)) {
             Vector2 mp = Input.mousePosition;
             if( mp.x > 1 && mp.y > 1
@@ -114,13 +122,17 @@ public class Main : MonoBehaviour {
                 push = push.normalized * -0.3f * mouseInfluenceMult(push.magnitude);
             }
         }
-
+        
+        // Carry over momentum
         push = push + momentum;
+
+        // If not cheating, handle influence of blobs
         if (!Input.GetMouseButton(1)) {
+            // For every neighbor add their push
             List<Point> neighbors = pp.GetNeighbors();
             foreach(Point p in neighbors) {
                 if( p.isRed() ) {
-                    Debug.Log("YOU LOSE, GOOD DAY SIR!");
+                    //Debug.Log("YOU LOSE, GOOD DAY SIR!");
                     paused = true;
                     Invoke("lose", 2);
                     return;
@@ -128,11 +140,13 @@ public class Main : MonoBehaviour {
                 Vector2 diff = pp.ToVector2() - p.ToVector2();
                 push = push + (diff.normalized * 0.3f * blobInfluenceMult(diff.magnitude));
             }
+            // Limit the movement speed
             if(push.magnitude > 5.0f) {
                 push = push.normalized * 5.0f;
             }
         }
 
+        // Take the new force vector and apply it to the current player position
         Vector2 newPos = pp.ToVector2() + push;
         float buf = 0.01f;
         if(newPos.x-buf <= bounds.x * -1) {
@@ -161,6 +175,7 @@ public class Main : MonoBehaviour {
         }
     }
 
+    // Calculate the mouse influence
     private float mouseInfluenceMult(float distance) {
         //1/(1+e^(0.6*(x-6))) - (1/(1+e^(15(x-0.25))))
         float mult = (float)(
@@ -168,7 +183,7 @@ public class Main : MonoBehaviour {
         );
         return mult;
     }
-
+    // Calculate the blob influence
     private float blobInfluenceMult(float distance) {
         // 1.2/(1+e^(0.7*(x-3)))
         float mult = (float)(
@@ -177,6 +192,7 @@ public class Main : MonoBehaviour {
         return mult;
     }
 
+    // Regenerate the point list based on the current game objects
     private void UpdatePoints() {
         // Clear the point list
         points = new List<Point>();
@@ -205,12 +221,16 @@ public class Main : MonoBehaviour {
         }
     }
 
+    // Re-trianguate
     private void UpdateTriangles() {
         triangles = Triangulator.Triangulate(points);
     }
 
+    // Draw the triangles
     private void ShowTriangulation() {
+        // Destroy the old triangles first
         HideTriangulation();
+
         foreach(Triangle tri in triangles) {
             GameObject newTriangleDrawer = Instantiate(TriangleDrawerPrefab);
             LineRenderer lineRenderer = newTriangleDrawer.GetComponent<LineRenderer>();
@@ -219,6 +239,7 @@ public class Main : MonoBehaviour {
         }
     }
 
+    // Destroy the triangulation
     private void HideTriangulation() {
         GameObject[] trianglesToRemove = GameObject.FindGameObjectsWithTag("TriangleDrawer");
         foreach( GameObject tri in trianglesToRemove ) {
@@ -226,23 +247,27 @@ public class Main : MonoBehaviour {
         }
     }
 
+    // Draw the voronoi edges
     private void ShowVoronoi() {
         foreach( Point p in points ) {
             p.DrawVoronoi(bounds);
         }
     }
 
+    // Hide the voronoi edges
     private void HideVoronoi() {
         foreach( Point p in points ) {
             p.RemoveVoronoi();
         }
     }
     
+    // Add a new blob to the world
     private void AddPoint() {
         Vector3 corner = bounds * -1;
         float x = UnityEngine.Random.Range(-corner.x, corner.x);
         float y = UnityEngine.Random.Range(-corner.y, corner.y);
 
+        // Make sure to place it in the opposite quadrant as the player
         if(Math.Sign(player.transform.position.x) == Math.Sign(x)) {
             x = x * -1;
         }
@@ -250,6 +275,7 @@ public class Main : MonoBehaviour {
             y = y * -1;
         }
 
+        // Decide whether to add a red or green blob
         GameObject blob = null;
         if( roundsUntilRed > 0 ) {
             Debug.Log("Adding point at (" + x + "," + y + ").");
@@ -260,10 +286,12 @@ public class Main : MonoBehaviour {
             blob = Instantiate(RedPointPrefab, new Vector3(x,y,0), Quaternion.identity);
             roundsUntilRed = 7;
         }
+
         Point p = new Point(blob);
         points.Add(p);
     }
 
+    // Move the dot
     private void TeleportDot() {
         Vector3 corner = bounds * -1;
         float x = UnityEngine.Random.Range(-corner.x, corner.x);
@@ -273,28 +301,20 @@ public class Main : MonoBehaviour {
         dot.transform.position = new Vector2(x, y);
     }
 
-    private void MoveDot() {
-        Vector3 corner = bounds * -1;
-        float x = UnityEngine.Random.Range(-corner.x, corner.x);
-        float y = UnityEngine.Random.Range(-corner.y, corner.y);
-
-        Debug.Log("Moving dot to (" + x + "," + y + ").");
-        dot.transform.position = new Vector2(x, y);
-    }
-
-
+    // Remove all blobs except the player and corners
     private void ClearAll() {
         HideTriangulation();
+        // Get all the green blobs and destroy them
         GameObject[] pointsToRemove = GameObject.FindGameObjectsWithTag("PointMarker");
         foreach( GameObject point in pointsToRemove ) {
             Destroy(point);
         }
+        // Get all the red blobs and destroy them
         pointsToRemove = GameObject.FindGameObjectsWithTag("RedPointMarker");
         foreach( GameObject point in pointsToRemove ) {
             Destroy(point);
         }
         points = new List<Point>();
-        
     }
 
 }

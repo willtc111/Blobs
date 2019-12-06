@@ -42,6 +42,7 @@ public class Line : IEquatable<Line>{
         return String.Format("({0},{1}),({2},{3})", points[0].x(), points[0].y(), points[1].x(), points[1].y());
     }
 
+    // Amazing hash function
     public override int GetHashCode() {
         int hash = 17;
         hash = hash * 31 + a().GetHashCode();

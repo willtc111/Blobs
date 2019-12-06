@@ -60,14 +60,15 @@ public class Point : IEquatable<Point>{
         neighbors.Add(p);
     }
 
+    // Draw the voronoi edges for this point
     public void DrawVoronoi(Vector2 bounds) {
-        Debug.Log("BOUNDS" + bounds);
         if( blob.tag.Equals("CornerPointMarker") | Math.Abs(pos[0]) > bounds[0] | Math.Abs(pos[1]) > bounds[1] ) {
             // Don't draw the voronoi borders for the four corner blobs or the player if they go out of bounds
             RemoveVoronoi();
             return;
         }
-        // Sort neighbors
+
+        // Sort neighbors by angle
         List<Point> neighborList = GetNeighbors();
         neighborList.Sort(new PointComparator(this));
         Point[] ns = neighborList.ToArray();    // Sorted neighbor points
@@ -77,6 +78,7 @@ public class Point : IEquatable<Point>{
             // j = next neighbor index
             int j = (i + 1) % neighbors.Count;
             Triangle t = new Triangle(this, ns[i], ns[j]);
+            // Triangle circumcenter == perpendicular bisectors intersection
             float[] circle = t.Circle();
             vs[i] = new Vector3(circle[0], circle[1], 0);
         }
@@ -89,7 +91,9 @@ public class Point : IEquatable<Point>{
 
     }
 
+    // Does the voronoi cell contain the given point?
     public bool CellContains(Vector2 point) {
+        // Just compare distance to neighbors
         foreach(Point neighbor in neighbors) {
             float selfDist = (ToVector2()-point).magnitude;
             float neighDist = (neighbor.ToVector2()-point).magnitude;

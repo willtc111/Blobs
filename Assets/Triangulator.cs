@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Performs Delaunay triangulation
 public class Triangulator {
     public static List<Triangle> Triangulate(List<Point> points) {
         // Create two triangles to form the square of the entire environment
@@ -43,14 +44,10 @@ public class Triangulator {
             }
         }
 
-        
-        //Debug.Log("DONE ADDING, NOW UPDATING NEIGHBORS");
-
+        // Update the points to know their neighbors
         foreach(Point p in points) {
             p.ClearNeighbors();
         }
-        
-        // Update the points to know their neighbors
         foreach(Triangle t in triangulation) {
             t.points[0].AddNeighbor(t.points[1]);
             t.points[1].AddNeighbor(t.points[0]);

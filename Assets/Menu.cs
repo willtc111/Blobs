@@ -17,7 +17,7 @@ public class Menu : MonoBehaviour {
     }
 
     public static void LoseGame() {
-        Debug.Log("Score is " + score);
+        // Debug.Log("Score is " + score);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

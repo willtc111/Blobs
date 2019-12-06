@@ -7,10 +7,12 @@ public class PointComparator : IComparer<Point> {
     private Vector2 p;
     private Vector2 pr = new Vector2(0,1);
     
+    // Create a Point Comparator with a reference point
     public PointComparator(Point pt) {
         p = (Vector2)pt;
     }
     
+    // Compare angles of two points against reference point
     public int Compare(Point a, Point b) {
         Vector2 pa = (Vector2)a - p;
         Vector2 pb = (Vector2)b - p;
