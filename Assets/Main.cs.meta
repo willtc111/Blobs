@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d71ea3014e14cfa49aee84331823ab06
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - player: {fileID: 590773127455838297, guid: c8b09d047bef5de418027ccbf917c4f0, type: 3}
+  - TriangleDrawerPrefab: {fileID: 1503080181872779965, guid: cc12140b3cd825f43a34c0aa14a202e2,
+      type: 3}
+  - PointPrefab: {fileID: 1618728940220117019, guid: 9b37fd21bb2d7564e8c82197f1d76bbd,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
