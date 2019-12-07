@@ -154,8 +154,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000076293945, y: -90.250015}
-  m_SizeDelta: {x: 768.2, y: -180.5}
+  m_AnchoredPosition: {x: 0.0000076293945, y: -64.97502}
+  m_SizeDelta: {x: 768.2, y: -231.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &234461788
 MonoBehaviour:
@@ -178,6 +178,10 @@ MonoBehaviour:
   m_text: 'Hold left mouse to move
 
     Press R to give up
+
+    Press T to show triangulation edges
+
+    Press V to show voronoi edges
 
     Hold right mouse to cheat'
   m_isRightToLeft: 0
@@ -207,8 +211,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -248,12 +252,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 234461788}
-    characterCount: 68
+    characterCount: 134
     spriteCount: 0
-    spaceCount: 14
-    wordCount: 15
+    spaceCount: 26
+    wordCount: 27
     linkCount: 0
-    lineCount: 3
+    lineCount: 5
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -1027,7 +1031,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000076293945, y: 116.05}
+  m_AnchoredPosition: {x: 0.0000076293945, y: 166.6}
   m_SizeDelta: {x: 768.2, y: 232.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1322077107

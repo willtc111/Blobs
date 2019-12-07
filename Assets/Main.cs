@@ -73,9 +73,9 @@ public class Main : MonoBehaviour {
         if( Input.GetKeyDown("v") ) {
             showingVoronoi = !showingVoronoi;
         }
-        if( Input.GetKeyDown("c") ) {
-            ClearAll();
-        }
+        // if( Input.GetKeyDown("c") ) {
+        //     ClearAll();
+        // }
 
         // Do the frame update stuff
         UpdatePoints();
